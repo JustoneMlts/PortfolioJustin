@@ -32,11 +32,7 @@ export default function Contact() {
 
   const submitEmail = async (e: any) => {
     e.preventDefault(); 
-    console.log(serviceId)
-    console.log(templateId)
-    console.log(publicKey)
-
-    await emailjs.send(
+      await emailjs.send(
       serviceId, 
       templateId, 
       {
