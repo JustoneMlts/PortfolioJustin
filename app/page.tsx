@@ -35,6 +35,17 @@ export default function Home() {
         <Projects
           projects={[
             {
+              id: "geneailogy",
+              title: "GeneAiLogy",
+              description: "Renouez avec votre histoire familiale avec une touche d'IA.",
+              image: "/GeneCard.png",
+              technologies: ["Next.js", "Framer Motion", "GSAP", "Sanity CMS"],
+              link: "https://geneailogy.vercel.app",
+              github: "https://github.com/JustoneMlts/geneailogy",
+              icon: <span>💬</span>,
+              category: "Website",
+            },
+            {
               id: "italingo",
               title: "Italingo",
               description: "Apprenez facilement l'italien avec une app interactive.",
@@ -56,17 +67,7 @@ export default function Home() {
               icon: <span>💼</span>,
               category: "Web App",
             },
-            {
-              id: "communication-site",
-              title: "ComStudio",
-              description: "Site vitrine d'une entreprise de communication moderne et créative.",
-              image: "/communication-company-website.png",
-              technologies: ["Next.js", "Framer Motion", "GSAP", "Sanity CMS"],
-              link: "#",
-              github: "https://github.com/JustoneMlts/Italingo",
-              icon: <span>💬</span>,
-              category: "Website",
-            },
+            
           ]}
         />
         <Experience
