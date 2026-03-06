@@ -4,6 +4,7 @@ import { motion, useScroll, useTransform } from "framer-motion"
 import { Badge } from "@/components/ui/badge"
 import { BriefcaseIcon } from "lucide-react"
 import { useRef } from "react"
+import { useLanguage } from "@/contexts/language-context"
 
 interface ExperienceItem {
   title: string
@@ -18,6 +19,7 @@ interface ExperienceProps {
 }
 
 export default function Experience({ experiences }: ExperienceProps) {
+  const { t } = useLanguage()
   const ref = useRef(null)
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -52,7 +54,6 @@ export default function Experience({ experiences }: ExperienceProps) {
 
   return (
     <section ref={ref} id="experience" className="py-20 relative overflow-hidden">
-      {/* Animated background elements */}
       <motion.div style={{ y: backgroundY }} className="absolute inset-0 opacity-5">
         <div className="absolute top-10 left-1/4 w-2 h-32 bg-primary transform rotate-12" />
         <div className="absolute bottom-20 right-1/4 w-2 h-24 bg-cyan-400 transform -rotate-12" />
@@ -78,10 +79,9 @@ export default function Experience({ experiences }: ExperienceProps) {
             }}
             className="text-3xl font-bold mb-4"
           >
-            Mon Parcours
+            {t.experience.title}
           </motion.h2>
 
-          {/* Animated underline with curve */}
           <div className="flex justify-center">
             <svg width="100" height="6" viewBox="0 0 100 6">
               <motion.path
@@ -104,14 +104,10 @@ export default function Experience({ experiences }: ExperienceProps) {
           </div>
         </motion.div>
 
-        {/* Container principal avec timeline */}
         <div className="relative">
-          {/* Timeline container avec largeur fixe */}
           <div className="absolute inset-0 flex justify-center">
             <div className="relative w-1">
-              {/* Timeline background */}
               <div className="absolute inset-0 bg-border/30"></div>
-              {/* Timeline animated */}
               <motion.div
                 style={{ height: timelineHeight }}
                 className="absolute inset-x-0 top-0 bg-gradient-to-b from-primary via-cyan-400 to-violet-400"
@@ -119,73 +115,19 @@ export default function Experience({ experiences }: ExperienceProps) {
             </div>
           </div>
 
-          {/* Experiences */}
           <div className="relative max-w-6xl mx-auto">
             {experiences.map((exp, index) => {
-              // Fonction pour calculer l'animation de chaque badge selon sa position
               const totalExperiences = experiences.length
-              const badgePosition = index / (totalExperiences - 1) // Position relative (0 à 1)
-
-              // Point d'activation : quand la timeline atteint ce badge
+              const badgePosition = index / (totalExperiences - 1)
               const activationPoint = Math.min(0.75, badgePosition * 0.8)
-
-              // Animation qui reste active une fois déclenchée
-              // const badgeScale = useTransform(
-              //   scrollYProgress,
-              //   [0, activationPoint, 1],
-              //   [1, 1.3, 1.3], // Reste à 1.3 après activation
-              // )
-
-              // const badgeOpacity = useTransform(
-              //   scrollYProgress,
-              //   [0, Math.max(0.05, activationPoint - 0.05), activationPoint, 1],
-              //   [0, 0.7, 1, 1], // Reste à 1 après activation
-              // )
-
-              // const badgeGlow = useTransform(
-              //   scrollYProgress,
-              //   [0, activationPoint, Math.min(1, activationPoint + 0.1), 1],
-              //   [0, 1, 0.8, 0.8], // Reste partiellement actif après le pic
-              // )
-
-              // Couleur de l'icône qui reste blanche après activation
-              // const iconColor = useTransform(
-              //   scrollYProgress,
-              //   [0, activationPoint, 1],
-              //   ["rgb(139, 92, 246)", "rgb(255, 255, 255)", "rgb(255, 255, 255)"],
-              // )
-
-              // Couleur de la bordure qui reste active
-              // const borderColor = useTransform(
-              //   scrollYProgress,
-              //   [0, activationPoint, 1],
-              //   ["rgba(139, 92, 246, 0.5)", "rgba(139, 92, 246, 1)", "rgba(139, 92, 246, 0.8)"],
-              // )
-
-              // Box shadow qui reste partiellement active
-              // const boxShadow = useTransform(
-              //   scrollYProgress,
-              //   [0, activationPoint, Math.min(1, activationPoint + 0.1), 1],
-              //   [
-              //     "0 0 0px rgba(139, 92, 246, 0.3)",
-              //     "0 0 20px rgba(139, 92, 246, 0.8), 0 0 40px rgba(139, 92, 246, 0.4)",
-              //     "0 0 15px rgba(139, 92, 246, 0.6), 0 0 30px rgba(139, 92, 246, 0.3)",
-              //     "0 0 15px rgba(139, 92, 246, 0.6), 0 0 30px rgba(139, 92, 246, 0.3)",
-              //   ],
-              // )
-
-              // const badgeAnimation = { badgeScale, badgeOpacity, badgeGlow, iconColor, borderColor, boxShadow }
 
               return (
                 <div key={index} className="relative mb-24">
-                  {/* Container pour centrer le badge - MASQUÉ SUR MOBILE */}
                   <div className="absolute inset-0 justify-center items-center pointer-events-none hidden md:flex">
                     <ExperienceBadge scrollYProgress={scrollYProgress} activationPoint={activationPoint} />
                   </div>
 
-                  {/* Grid pour les cartes - ADAPTÉ POUR MOBILE */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center min-h-[200px]">
-                    {/* Card à gauche pour les index pairs */}
                     {index % 2 === 0 && (
                       <>
                         <motion.div
@@ -218,7 +160,6 @@ export default function Experience({ experiences }: ExperienceProps) {
                           transition={{ duration: 0.3 }}
                           className="w-full p-6 bg-slate-800/50 border border-slate-700/50 rounded-lg shadow-md backdrop-blur-sm relative overflow-hidden z-10 justify-self-end md:mr-8"
                         >
-                          {/* Card content */}
                           <motion.div
                             initial={{ x: "-100%" }}
                             whileHover={{ x: "100%" }}
@@ -253,14 +194,13 @@ export default function Experience({ experiences }: ExperienceProps) {
                             ))}
                           </div>
                         </motion.div>
-                        <div className="hidden md:block"></div> {/* Colonne vide sur desktop seulement */}
+                        <div className="hidden md:block"></div>
                       </>
                     )}
 
-                    {/* Card à droite pour les index impairs */}
                     {index % 2 === 1 && (
                       <>
-                        <div className="hidden md:block"></div> {/* Colonne vide sur desktop seulement */}
+                        <div className="hidden md:block"></div>
                         <motion.div
                           initial="hidden"
                           whileInView="visible"
@@ -291,7 +231,6 @@ export default function Experience({ experiences }: ExperienceProps) {
                           transition={{ duration: 0.3 }}
                           className="w-full p-6 bg-slate-800/50 border border-slate-700/50 rounded-lg shadow-md backdrop-blur-sm relative overflow-hidden z-10 justify-self-start md:ml-8"
                         >
-                          {/* Card content */}
                           <motion.div
                             initial={{ x: "-100%" }}
                             whileHover={{ x: "100%" }}
@@ -357,36 +296,33 @@ const ExperienceBadge = ({ scrollYProgress, activationPoint }: ExperienceBadgePr
   const badgeScale = useTransform(
     scrollYProgress,
     [0, Math.max(0, activationPoint - 0.1), activationPoint, 1],
-    [1, 1, 1.3, 1.3], // Reste à 1.3 après activation
+    [1, 1, 1.3, 1.3],
   )
 
   const badgeOpacity = useTransform(
     scrollYProgress,
     [0, Math.max(0, activationPoint - 0.1), activationPoint, 1],
-    [0, 0.7, 1, 1], // Reste à 1 après activation
+    [0, 0.7, 1, 1],
   )
 
   const badgeGlow = useTransform(
     scrollYProgress,
     [0, Math.max(0, activationPoint - 0.1), activationPoint, Math.min(1, activationPoint + 0.1), 1],
-    [0, 0, 1, 0.8, 0.8], // Se déclenche au contact et reste partiellement actif
+    [0, 0, 1, 0.8, 0.8],
   )
 
-  // Couleur de l'icône qui change au premier contact
   const iconColor = useTransform(
     scrollYProgress,
     [0, Math.max(0, activationPoint - 0.1), activationPoint, 1],
     ["rgb(139, 92, 246)", "rgb(139, 92, 246)", "rgb(255, 255, 255)", "rgb(255, 255, 255)"],
   )
 
-  // Couleur de la bordure qui s'active au contact
   const borderColor = useTransform(
     scrollYProgress,
     [0, Math.max(0, activationPoint - 0.1), activationPoint, 1],
     ["rgba(139, 92, 246, 0.5)", "rgba(139, 92, 246, 0.5)", "rgba(139, 92, 246, 1)", "rgba(139, 92, 246, 0.8)"],
   )
 
-  // Box shadow qui se déclenche au premier contact
   const boxShadow = useTransform(
     scrollYProgress,
     [0, Math.max(0, activationPoint - 0.1), activationPoint, Math.min(1, activationPoint + 0.1), 1],
@@ -407,7 +343,6 @@ const ExperienceBadge = ({ scrollYProgress, activationPoint }: ExperienceBadgePr
       }}
       className="relative w-16 h-16 rounded-full flex items-center justify-center border-2 backdrop-blur-sm pointer-events-auto z-30"
     >
-      {/* Background avec gradient qui change selon l'activation */}
       <motion.div
         style={{
           opacity: badgeGlow,
@@ -415,7 +350,6 @@ const ExperienceBadge = ({ scrollYProgress, activationPoint }: ExperienceBadgePr
         className="absolute inset-0 rounded-full bg-gradient-to-br from-primary/50 to-cyan-400/50"
       />
 
-      {/* Border qui s'illumine et reste active */}
       <motion.div
         style={{
           boxShadow: boxShadow,
@@ -424,10 +358,8 @@ const ExperienceBadge = ({ scrollYProgress, activationPoint }: ExperienceBadgePr
         className="absolute inset-0 rounded-full border-2"
       />
 
-      {/* Background par défaut */}
       <div className="absolute inset-0 rounded-full bg-gradient-to-br from-primary/30 to-cyan-400/30" />
 
-      {/* Icône avec couleur persistante */}
       <motion.div
         style={{
           color: iconColor,

@@ -3,8 +3,10 @@
 import { motion, useScroll, useTransform } from "framer-motion"
 import { CheckCircle } from "lucide-react"
 import { useRef } from "react"
+import { useLanguage } from "@/contexts/language-context"
 
 export default function About() {
+  const { t } = useLanguage()
   const ref = useRef(null)
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -67,7 +69,6 @@ export default function About() {
 
   return (
     <section ref={ref} id="about" className="py-20 bg-slate-900/50 relative overflow-hidden">
-      {/* Background animated elements */}
       <motion.div
         style={{ x, opacity }}
         className="absolute top-10 left-0 w-32 h-32 border-2 border-primary/20 rotate-45"
@@ -90,10 +91,9 @@ export default function About() {
           className="text-center mb-16"
         >
           <motion.h2 variants={slideFromLeft} className="text-3xl font-bold mb-4">
-            À propos de moi
+            {t.about.title}
           </motion.h2>
 
-          {/* Animated underline */}
           <div className="flex justify-center mb-2">
             <svg width="80" height="4" viewBox="0 0 80 4">
               <motion.path
@@ -115,10 +115,7 @@ export default function About() {
           className="grid md:grid-cols-2 gap-12 items-center"
         >
           <motion.div variants={slideFromLeft} className="relative">
-            {/* Cadre décoratif statique - ANIMATION SUPPRIMÉE */}
             <div className="absolute -top-4 -left-4 w-full h-full border-2 border-primary/30 rounded-lg" />
-
-            {/* Point décoratif statique - ANIMATION SUPPRIMÉE */}
             <div className="absolute -top-2 -right-2 w-8 h-8 bg-primary/20 rounded-full blur-sm opacity-50" />
 
             <img
@@ -140,7 +137,7 @@ export default function About() {
               }}
               className="text-2xl font-semibold"
             >
-              Développeur Full Stack passionné
+              {t.about.subtitle}
             </motion.h3>
 
             <motion.p
@@ -154,9 +151,7 @@ export default function About() {
               }}
               className="text-foreground/80"
             >
-              Avec plus de 3 ans d'expérience dans le développement web, je me spécialise dans la création
-              d'applications web modernes et performantes. Ma passion pour les nouvelles technologies me pousse à
-              constamment apprendre et à me perfectionner.
+              {t.about.p1}
             </motion.p>
 
             <motion.p
@@ -170,8 +165,7 @@ export default function About() {
               }}
               className="text-foreground/80"
             >
-              Je m'efforce de créer des expériences utilisateur exceptionnelles en combinant un design attrayant avec
-              des fonctionnalités robustes et une architecture solide.
+              {t.about.p2}
             </motion.p>
 
             <motion.div
@@ -187,14 +181,7 @@ export default function About() {
               }}
               className="grid grid-cols-2 gap-4 pt-4"
             >
-              {[
-                "Développement Front-end",
-                "Développement Back-end",
-                "Architecture logicielle",
-                "UI/UX Design",
-                "Optimisation des performances",
-                "Responsive Design",
-              ].map((item, index) => (
+              {t.about.skills.map((item, index) => (
                 <motion.div
                   key={item}
                   variants={{

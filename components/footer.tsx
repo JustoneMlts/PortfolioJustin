@@ -1,6 +1,10 @@
+"use client"
+
 import { Github, Linkedin, Mail, Twitter } from "lucide-react"
+import { useLanguage } from "@/contexts/language-context"
 
 export default function Footer() {
+  const { t } = useLanguage()
   const currentYear = new Date().getFullYear()
 
   return (
@@ -11,7 +15,7 @@ export default function Footer() {
             <h3 className="text-xl font-bold">
               Justin<span className="text-primary">Maltese</span>
             </h3>
-            <p className="text-foreground/70 mt-2">Développeur Full Stack</p>
+            <p className="text-foreground/70 mt-2">{t.footer.role}</p>
           </div>
 
           <div className="flex space-x-6">
@@ -49,7 +53,7 @@ export default function Footer() {
         </div>
 
         <div className="border-t border-border mt-8 pt-8 text-center text-foreground/60 text-sm">
-          <p>© {currentYear} Justin Maltese. Tous droits réservés.</p>
+          <p>© {currentYear} Justin Maltese. {t.footer.rights}</p>
         </div>
       </div>
     </footer>

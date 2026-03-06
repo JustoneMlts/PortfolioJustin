@@ -8,13 +8,15 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Mail, MapPin, Phone, Send } from "lucide-react"
-import emailjs from '@emailjs/browser';
+import emailjs from '@emailjs/browser'
+import { useLanguage } from "@/contexts/language-context"
 
 export default function Contact() {
+  const { t } = useLanguage()
 
-  const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID ?? "";
-  const templateId = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID ?? "";
-  const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY ?? "";
+  const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID ?? ""
+  const templateId = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID ?? ""
+  const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY ?? ""
 
   const [formData, setFormData] = useState({
     name: "",
@@ -23,7 +25,6 @@ export default function Contact() {
     message: "",
   })
   const [mailState, setMailState] = useState(false)
-  
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
@@ -31,28 +32,21 @@ export default function Contact() {
   }
 
   const submitEmail = async (e: any) => {
-    e.preventDefault(); 
-      await emailjs.send(
-      serviceId, 
-      templateId, 
+    e.preventDefault()
+    await emailjs.send(
+      serviceId,
+      templateId,
       {
         from_name: formData.name,
         from_email: formData.email,
         message: formData.message,
       },
       publicKey
-    ).then(() => {
-      setMailState(true);
-    },
-      () => {
-        setMailState(false);
-      })
-    setFormData({
-      name: "",
-      email: "",
-      subject: "",
-      message: "",
-    })
+    ).then(
+      () => { setMailState(true) },
+      () => { setMailState(false) }
+    )
+    setFormData({ name: "", email: "", subject: "", message: "" })
   }
 
   const drawLine = {
@@ -84,10 +78,9 @@ export default function Contact() {
             transition={{ duration: 0.8, type: "spring" }}
             className="text-3xl font-bold mb-4"
           >
-            Me Contacter
+            {t.contact.title}
           </motion.h2>
 
-          {/* Animated underline */}
           <div className="flex justify-center">
             <svg width="100" height="6" viewBox="0 0 100 6">
               <motion.path
@@ -123,11 +116,8 @@ export default function Contact() {
             className="space-y-8"
           >
             <div>
-              <h3 className="text-2xl font-semibold mb-4">Discutons de votre projet</h3>
-              <p className="text-foreground/80">
-                Vous avez un projet en tête ? N'hésitez pas à me contacter pour en discuter. Je suis toujours à la
-                recherche de nouvelles opportunités passionnantes.
-              </p>
+              <h3 className="text-2xl font-semibold mb-4">{t.contact.subtitle}</h3>
+              <p className="text-foreground/80">{t.contact.description}</p>
             </div>
 
             <div className="space-y-4">
@@ -146,7 +136,7 @@ export default function Contact() {
                   <Phone className="h-5 w-5 text-primary" />
                 </div>
                 <div>
-                  <h4 className="font-medium">Téléphone</h4>
+                  <h4 className="font-medium">{t.contact.phone}</h4>
                   <p className="text-foreground/70">+33 6 12 34 56 78</p>
                 </div>
               </div>
@@ -156,7 +146,7 @@ export default function Contact() {
                   <MapPin className="h-5 w-5 text-primary" />
                 </div>
                 <div>
-                  <h4 className="font-medium">Localisation</h4>
+                  <h4 className="font-medium">{t.contact.location}</h4>
                   <p className="text-foreground/70">Paris, France</p>
                 </div>
               </div>
@@ -173,14 +163,14 @@ export default function Contact() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <label htmlFor="name" className="text-sm font-medium">
-                    Nom
+                    {t.contact.name}
                   </label>
                   <Input
                     id="name"
                     name="name"
                     value={formData.name}
                     onChange={handleChange}
-                    placeholder="Votre nom"
+                    placeholder={t.contact.namePlaceholder}
                     required
                   />
                 </div>
@@ -194,7 +184,7 @@ export default function Contact() {
                     type="email"
                     value={formData.email}
                     onChange={handleChange}
-                    placeholder="votre@email.com"
+                    placeholder={t.contact.emailPlaceholder}
                     required
                   />
                 </div>
@@ -202,28 +192,28 @@ export default function Contact() {
 
               <div className="space-y-2">
                 <label htmlFor="subject" className="text-sm font-medium">
-                  Sujet
+                  {t.contact.subject}
                 </label>
                 <Input
                   id="subject"
                   name="subject"
                   value={formData.subject}
                   onChange={handleChange}
-                  placeholder="Sujet de votre message"
+                  placeholder={t.contact.subjectPlaceholder}
                   required
                 />
               </div>
 
               <div className="space-y-2">
                 <label htmlFor="message" className="text-sm font-medium">
-                  Message
+                  {t.contact.message}
                 </label>
                 <Textarea
                   id="message"
                   name="message"
                   value={formData.message}
                   onChange={handleChange}
-                  placeholder="Votre message..."
+                  placeholder={t.contact.messagePlaceholder}
                   rows={5}
                   required
                 />
@@ -232,7 +222,7 @@ export default function Contact() {
               <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
                 <Button type="submit" className="w-full form-button">
                   <Send className="mr-2 h-4 w-4" />
-                  Envoyer le message
+                  {t.contact.send}
                 </Button>
               </motion.div>
             </form>

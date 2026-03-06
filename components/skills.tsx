@@ -1,9 +1,10 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { motion, useScroll, useTransform } from "framer-motion"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { useRef } from "react"
+import { useLanguage } from "@/contexts/language-context"
 
 interface Skill {
   name: string
@@ -19,12 +20,18 @@ interface SkillsProps {
 }
 
 export default function Skills({ categories }: SkillsProps) {
-  const [activeTab, setActiveTab] = useState(categories[0].name)
+  const { t } = useLanguage()
+  const [activeTab, setActiveTab] = useState("tab-0")
   const ref = useRef(null)
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start end", "end start"],
   })
+
+  // Reset active tab when categories change (language switch)
+  useEffect(() => {
+    setActiveTab("tab-0")
+  }, [categories])
 
   const backgroundX = useTransform(scrollYProgress, [0, 1], ["-50%", "50%"])
   const floatingY = useTransform(scrollYProgress, [0, 1], ["0%", "-20%"])
@@ -73,7 +80,6 @@ export default function Skills({ categories }: SkillsProps) {
 
   return (
     <section ref={ref} id="skills" className="py-20 bg-slate-900/30 relative overflow-hidden">
-      {/* Animated background elements */}
       <motion.div
         style={{ x: backgroundX }}
         className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-transparent via-primary/20 to-transparent"
@@ -107,10 +113,9 @@ export default function Skills({ categories }: SkillsProps) {
             }}
             className="text-3xl font-bold mb-4"
           >
-            Mes Compétences
+            {t.skills.title}
           </motion.h2>
 
-          {/* Complex animated underline */}
           <div className="flex justify-center">
             <svg width="120" height="8" viewBox="0 0 120 8">
               <motion.path
@@ -146,7 +151,7 @@ export default function Skills({ categories }: SkillsProps) {
           viewport={{ once: true, margin: "-50px" }}
           variants={containerVariants}
         >
-          <Tabs defaultValue={categories[0].name} className="w-full max-w-4xl mx-auto" onValueChange={setActiveTab}>
+          <Tabs value={activeTab} className="w-full max-w-4xl mx-auto" onValueChange={setActiveTab}>
             <motion.div
               variants={{
                 hidden: { y: 50, opacity: 0 },
@@ -159,9 +164,9 @@ export default function Skills({ categories }: SkillsProps) {
             >
               <TabsList className="flex justify-between items-center px-10 py-4 mb-12 bg-slate-800/50 border border-slate-700/50">
                 {categories.map((category, index) => (
-                  <motion.div key={category.name} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                  <motion.div key={`tab-${index}`} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                     <TabsTrigger
-                      value={category.name}
+                      value={`tab-${index}`}
                       className="text-base data-[state=active]:bg-primary/20 data-[state=active]:text-primary transition-all duration-300"
                     >
                       {category.name}
@@ -171,15 +176,15 @@ export default function Skills({ categories }: SkillsProps) {
               </TabsList>
             </motion.div>
 
-            {categories.map((category) => (
-              <TabsContent key={category.name} value={category.name} className="mt-0">
+            {categories.map((category, index) => (
+              <TabsContent key={`tab-${index}`} value={`tab-${index}`} className="mt-0">
                 <motion.div
                   initial="hidden"
                   animate="visible"
                   variants={containerVariants}
                   className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4"
                 >
-                  {category.skills.map((skill, index) => (
+                  {category.skills.map((skill, skillIndex) => (
                     <motion.div
                       key={skill.name}
                       variants={skillVariants}
@@ -193,7 +198,6 @@ export default function Skills({ categories }: SkillsProps) {
                       className="group perspective-1000"
                     >
                       <div className="p-6 rounded-lg bg-gradient-to-br from-slate-800/80 to-slate-900/80 border border-slate-700/50 hover:border-primary/50 transition-all duration-300 h-full flex flex-col items-center justify-center text-center relative overflow-hidden transform-gpu">
-                        {/* Background animation on hover */}
                         <motion.div
                           initial={{ scale: 0, opacity: 0 }}
                           whileHover={{ scale: 1, opacity: 0.1 }}
@@ -201,7 +205,6 @@ export default function Skills({ categories }: SkillsProps) {
                           className="absolute inset-0 bg-gradient-to-br from-primary to-cyan-400 rounded-lg"
                         />
 
-                        {/* Floating particles */}
                         <motion.div
                           animate={{
                             y: [0, -10, 0],
@@ -210,7 +213,7 @@ export default function Skills({ categories }: SkillsProps) {
                           transition={{
                             duration: 3,
                             repeat: Number.POSITIVE_INFINITY,
-                            delay: index * 0.2,
+                            delay: skillIndex * 0.2,
                           }}
                           className="absolute top-2 right-2 w-2 h-2 bg-primary/50 rounded-full"
                         />
@@ -219,7 +222,7 @@ export default function Skills({ categories }: SkillsProps) {
                           initial={{ scale: 0 }}
                           animate={{ scale: 1 }}
                           transition={{
-                            delay: index * 0.1 + 0.3,
+                            delay: skillIndex * 0.1 + 0.3,
                             type: "spring",
                             stiffness: 200,
                           }}
@@ -231,18 +234,17 @@ export default function Skills({ categories }: SkillsProps) {
                         <motion.h3
                           initial={{ opacity: 0 }}
                           animate={{ opacity: 1 }}
-                          transition={{ delay: index * 0.1 + 0.5 }}
+                          transition={{ delay: skillIndex * 0.1 + 0.5 }}
                           className="font-medium text-lg group-hover:text-primary transition-colors relative z-10"
                         >
                           {skill.name}
                         </motion.h3>
 
-                        {/* Accent gradient en bas - simplifié */}
                         <motion.div
                           initial={{ width: 0 }}
                           animate={{ width: "100%" }}
                           transition={{
-                            delay: index * 0.1 + 0.8,
+                            delay: skillIndex * 0.1 + 0.8,
                             duration: 0.8,
                             ease: "easeOut",
                           }}
@@ -268,7 +270,6 @@ export default function Skills({ categories }: SkillsProps) {
             }}
             className="mt-16 p-6 bg-slate-800/50 border border-slate-700/50 rounded-lg shadow-md max-w-4xl mx-auto relative overflow-hidden"
           >
-            {/* Background wave animation */}
             <motion.div
               animate={{
                 x: ["-100%", "100%"],
@@ -282,7 +283,7 @@ export default function Skills({ categories }: SkillsProps) {
               className="absolute inset-0 bg-gradient-to-r from-transparent via-primary/20 to-transparent"
             />
 
-            <h3 className="text-xl font-semibold mb-6 text-center relative z-10">Autres compétences</h3>
+            <h3 className="text-xl font-semibold mb-6 text-center relative z-10">{t.skills.other}</h3>
             <motion.div
               variants={{
                 hidden: { opacity: 0 },
@@ -338,7 +339,6 @@ export default function Skills({ categories }: SkillsProps) {
                   whileTap={{ scale: 0.95 }}
                   className="px-4 py-2 bg-slate-800/80 rounded-full border border-slate-700/50 hover:border-primary/50 hover:text-primary transition-all cursor-pointer relative overflow-hidden"
                 >
-                  {/* Gradient accent au survol */}
                   <motion.div
                     initial={{ scale: 0, opacity: 0 }}
                     whileHover={{ scale: 1, opacity: 0.1 }}

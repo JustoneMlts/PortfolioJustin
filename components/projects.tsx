@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { ExternalLink, Github, Globe, Briefcase, MessageSquare, Eye } from "lucide-react"
 import { useRef } from "react"
+import { useLanguage } from "@/contexts/language-context"
 
 interface Project {
   id: string
@@ -44,7 +45,7 @@ const defaultProjects: Project[] = [
     image: "/project-management-app.png",
     technologies: ["Next.js", "PostgreSQL", "Prisma", "Tailwind CSS"],
     link: "#",
-    github: '',
+    github: "",
     icon: <Briefcase className="w-6 h-6" />,
     category: "Web App",
   },
@@ -62,6 +63,7 @@ const defaultProjects: Project[] = [
 ]
 
 export default function Projects({ projects = defaultProjects }: ProjectsProps) {
+  const { t } = useLanguage()
   const [activeProject, setActiveProject] = useState<string | null>(null)
   const [isMobile, setIsMobile] = useState(false)
   const ref = useRef(null)
@@ -74,7 +76,6 @@ export default function Projects({ projects = defaultProjects }: ProjectsProps) 
   const backgroundRotate = useTransform(scrollYProgress, [0, 1], [0, 360])
   const floatingY = useTransform(scrollYProgress, [0, 1], ["0%", "-30%"])
 
-  // Détecter si on est sur mobile
   useEffect(() => {
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768)
@@ -149,7 +150,6 @@ export default function Projects({ projects = defaultProjects }: ProjectsProps) 
 
   return (
     <section ref={ref} id="projects" className="py-20 relative overflow-hidden">
-      {/* Animated background elements */}
       <motion.div
         style={{ rotate: backgroundRotate }}
         className="absolute top-10 right-10 w-20 h-20 border-2 border-cyan-400/30 neon-border"
@@ -183,10 +183,9 @@ export default function Projects({ projects = defaultProjects }: ProjectsProps) 
             }}
             className="text-3xl font-bold mb-4 neon-glow"
           >
-            Mes Projets
+            {t.projects.title}
           </motion.h2>
 
-          {/* Animated underline with multiple paths */}
           <div className="flex justify-center">
             <svg width="140" height="10" viewBox="0 0 140 10">
               <motion.path
@@ -243,7 +242,6 @@ export default function Projects({ projects = defaultProjects }: ProjectsProps) 
               }}
               className="relative group perspective-1000"
             >
-              {/* Vignette principale */}
               <motion.div
                 className="relative bg-slate-900/80 border border-slate-700/50 rounded-lg p-6 cursor-pointer transition-all duration-300 hover:border-primary/50 hover:shadow-lg hover:shadow-primary/20 neon-card transform-gpu"
                 onMouseEnter={() => handleMouseEnter(project.id)}
@@ -255,7 +253,6 @@ export default function Projects({ projects = defaultProjects }: ProjectsProps) 
                   transition: { duration: 0.3 },
                 }}
               >
-                {/* Background glow animation on hover */}
                 <motion.div
                   initial={{ opacity: 0, scale: 0.8 }}
                   whileHover={{ opacity: 0.1, scale: 1.2 }}
@@ -263,7 +260,6 @@ export default function Projects({ projects = defaultProjects }: ProjectsProps) 
                   className="absolute inset-0 bg-gradient-to-br from-primary to-cyan-400 rounded-lg blur-xl"
                 />
 
-                {/* Contours partiels alternés avec animation */}
                 <div className="absolute inset-0 pointer-events-none">
                   {index % 3 === 0 && (
                     <>
@@ -321,14 +317,12 @@ export default function Projects({ projects = defaultProjects }: ProjectsProps) 
                   )}
                 </div>
 
-                {/* Header avec logo et infos */}
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.1 + 0.3, duration: 0.6 }}
                   className="flex items-start space-x-4 mb-4 relative z-10"
                 >
-                  {/* Logo avec animation */}
                   <motion.div
                     whileHover={{
                       rotate: 360,
@@ -346,7 +340,6 @@ export default function Projects({ projects = defaultProjects }: ProjectsProps) 
                     {project.icon}
                   </motion.div>
 
-                  {/* Infos du projet */}
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center justify-between mb-1">
                       <h3 className="text-lg font-semibold text-foreground truncate">{project.title}</h3>
@@ -363,7 +356,6 @@ export default function Projects({ projects = defaultProjects }: ProjectsProps) 
                   </div>
                 </motion.div>
 
-                {/* Technologies avec animation staggered */}
                 <motion.div
                   initial={{ opacity: 0 }}
                   whileInView={{ opacity: 1 }}
@@ -407,7 +399,6 @@ export default function Projects({ projects = defaultProjects }: ProjectsProps) 
                   )}
                 </motion.div>
 
-                {/* Actions avec animation */}
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
@@ -418,7 +409,7 @@ export default function Projects({ projects = defaultProjects }: ProjectsProps) 
                     <Button size="sm" variant="outline" asChild className="flex-1 neon-button-outline text-xs">
                       <a href={project.link} target="_blank" rel="noopener noreferrer">
                         <ExternalLink className="mr-1 h-3 w-3" />
-                        Voir
+                        {t.projects.view}
                       </a>
                     </Button>
                   </motion.div>
@@ -431,7 +422,6 @@ export default function Projects({ projects = defaultProjects }: ProjectsProps) 
                   </motion.div>
                 </motion.div>
 
-                {/* Indicateur d'interaction animé */}
                 <motion.div
                   animate={{
                     scale: [1, 1.2, 1],
@@ -451,7 +441,6 @@ export default function Projects({ projects = defaultProjects }: ProjectsProps) 
                   ></div>
                 </motion.div>
 
-                {/* Indicateur de click pour mobile */}
                 {isMobile && (
                   <motion.div
                     animate={{
@@ -474,7 +463,6 @@ export default function Projects({ projects = defaultProjects }: ProjectsProps) 
                 )}
               </motion.div>
 
-              {/* Overlay avec image au survol/clic - CORRIGÉ */}
               <AnimatePresence mode="wait">
                 {activeProject === project.id && (
                   <motion.div
@@ -484,19 +472,16 @@ export default function Projects({ projects = defaultProjects }: ProjectsProps) 
                     transition={{ duration: 0.4, type: "spring" }}
                     className="absolute inset-0 z-20 bg-slate-900/95 backdrop-blur-sm rounded-lg border border-primary/50 overflow-hidden"
                     onMouseEnter={() => {
-                      // Empêche la fermeture au hover sur l'overlay
                       if (!isMobile) {
                         setActiveProject(project.id)
                       }
                     }}
                     onMouseLeave={() => {
-                      // Ferme seulement si on quitte complètement la zone
                       if (!isMobile) {
                         setActiveProject(null)
                       }
                     }}
                   >
-                    {/* Image du projet */}
                     <div className="relative h-full">
                       <motion.img
                         initial={{ scale: 1.2, opacity: 0 }}
@@ -507,7 +492,6 @@ export default function Projects({ projects = defaultProjects }: ProjectsProps) 
                         className="w-full h-full object-cover"
                       />
 
-                      {/* Overlay avec infos */}
                       <motion.div
                         initial={{ y: 50, opacity: 0 }}
                         animate={{ y: 0, opacity: 1 }}
@@ -522,15 +506,15 @@ export default function Projects({ projects = defaultProjects }: ProjectsProps) 
                               <Button size="sm" asChild className="neon-button">
                                 <a href={project.link} target="_blank" rel="noopener noreferrer">
                                   <ExternalLink className="mr-2 h-4 w-4" />
-                                  Voir le projet
+                                  {t.projects.viewProject}
                                 </a>
                               </Button>
                             </motion.div>
                             <motion.div whileHover={{ scale: 1.05, rotate: 10 }} whileTap={{ scale: 0.95 }}>
                               <Button size="sm" variant="outline" asChild className="neon-button-outline">
-                                <a href="https://github.com" target="_blank" rel="noopener noreferrer">
+                                <a href={project.github} target="_blank" rel="noopener noreferrer">
                                   <Github className="mr-2 h-4 w-4" />
-                                  Code
+                                  {t.projects.code}
                                 </a>
                               </Button>
                             </motion.div>
@@ -538,7 +522,6 @@ export default function Projects({ projects = defaultProjects }: ProjectsProps) 
                         </div>
                       </motion.div>
 
-                      {/* Bouton de fermeture sur mobile */}
                       {isMobile && (
                         <motion.button
                           initial={{ scale: 0 }}

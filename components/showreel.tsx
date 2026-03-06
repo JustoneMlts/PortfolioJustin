@@ -5,8 +5,11 @@ import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Send, Bot, User } from "lucide-react"
+import { useLanguage } from "@/contexts/language-context"
 
 export default function Showreel() {
+  const { t } = useLanguage()
+
   const drawLine = {
     hidden: { pathLength: 0, opacity: 0 },
     visible: {
@@ -21,7 +24,6 @@ export default function Showreel() {
 
   return (
     <section id="showreel" className="py-20 bg-slate-900/30 relative">
-      {/* Neon accent lines */}
       <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-primary to-transparent opacity-50"></div>
       <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-cyan-400 to-transparent opacity-50"></div>
 
@@ -40,10 +42,9 @@ export default function Showreel() {
             transition={{ duration: 0.8, type: "spring" }}
             className="text-3xl font-bold mb-4 neon-glow"
           >
-            Chat IA
+            {t.showreel.title}
           </motion.h2>
 
-          {/* Animated underline */}
           <div className="flex justify-center">
             <svg width="80" height="4" viewBox="0 0 80 4">
               <motion.path
@@ -66,7 +67,7 @@ export default function Showreel() {
             transition={{ delay: 0.3, duration: 0.6 }}
             className="text-foreground/70 mt-4"
           >
-            Découvrez l'intégration d'intelligence artificielle dans mes projets
+            {t.showreel.subtitle}
           </motion.p>
         </motion.div>
 
@@ -77,26 +78,16 @@ export default function Showreel() {
 }
 
 function ChatDemo() {
+  const { t } = useLanguage()
   const [messages, setMessages] = useState([
-    { role: "assistant", content: "Bonjour ! Je suis un assistant IA. Comment puis-je vous aider aujourd'hui ?" },
+    { role: "assistant", content: t.showreel.initialMessage },
   ])
   const [input, setInput] = useState("")
 
   const handleSend = () => {
     if (!input.trim()) return
 
-    const responses = [
-      "C'est une excellente question ! En tant que démo, je peux vous dire que Justin maîtrise parfaitement l'intégration d'IA dans ses applications.",
-      "Intéressant ! Justin utilise les dernières technologies comme React, Next.js et TypeScript pour créer des interfaces modernes.",
-      "Absolument ! L'expérience utilisateur est au cœur de chaque projet de Justin. Il privilégie toujours la simplicité et l'efficacité.",
-      "Parfait ! Justin peut vous aider à concrétiser vos idées avec des solutions techniques innovantes et performantes.",
-      "Excellente remarque ! Justin a une expertise particulière dans l'intégration d'APIs d'IA comme OpenAI, Claude ou Gemini.",
-      "Tout à fait ! Justin développe des chatbots intelligents et des interfaces conversationnelles pour améliorer l'expérience utilisateur.",
-      "Bonne question ! Justin maîtrise l'architecture full-stack nécessaire pour déployer des solutions IA robustes et scalables.",
-      "Précisément ! Justin combine design moderne et intelligence artificielle pour créer des applications vraiment innovantes.",
-    ]
-
-    const randomResponse = responses[Math.floor(Math.random() * responses.length)]
+    const randomResponse = t.showreel.responses[Math.floor(Math.random() * t.showreel.responses.length)]
 
     const newMessages = [...messages, { role: "user", content: input }, { role: "assistant", content: randomResponse }]
 
@@ -150,7 +141,7 @@ function ChatDemo() {
           <Input
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            placeholder="Posez-moi une question sur Justin ou ses compétences..."
+            placeholder={t.showreel.placeholder}
             onKeyPress={(e) => e.key === "Enter" && handleSend()}
             className="bg-slate-700/50 border-slate-600 focus:border-primary/50 focus:ring-primary/20"
           />
@@ -163,10 +154,7 @@ function ChatDemo() {
       </div>
 
       <div className="mt-4 text-center">
-        <p className="text-xs text-foreground/50">
-          💡 Essayez de me demander des informations sur les compétences de Justin, ses projets ou ses technologies
-          préférées
-        </p>
+        <p className="text-xs text-foreground/50">{t.showreel.tip}</p>
       </div>
     </motion.div>
   )
