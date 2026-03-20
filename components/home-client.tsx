@@ -3,7 +3,6 @@
 import { useLanguage } from "@/contexts/language-context"
 import Hero from "@/components/hero"
 import Projects from "@/components/projects"
-import Showreel from "@/components/showreel"
 import About from "@/components/about"
 import Experience from "@/components/experience"
 import Skills from "@/components/skills"
@@ -42,7 +41,7 @@ const projectMeta: {
     id: "pfg",
     image: "/pfgCard.png",
     technologies: ["C#", ".NET", "React", "MySQL"],
-    link: "#",
+    link: "https://pfg-liard.vercel.app/",
     github: "#",
     icon: <span>📄</span>,
     category: "Web App",
