@@ -151,6 +151,12 @@ const translations: Record<Lang, Translation> = {
           description:
             "Une app mobile de lexique interactif utilisant l'IA pour vous accompagner dans votre apprentissage.",
         },
+        {
+          id: "tiip",
+          title: "TIIP",
+          description:
+            "Application web de gestion d'incidents et de tracking de données avec analyse par IA.",
+        },
       ],
     },
     experience: {
@@ -300,6 +306,12 @@ const translations: Record<Lang, Translation> = {
           title: "Lexia",
           description:
             "An interactive vocabulary mobile app using AI to guide you in your learning journey.",
+        },
+        {
+          id: "tiip",
+          title: "TIIP",
+          description:
+            "Web application for incident management and data tracking with AI-powered analysis.",
         },
       ],
     },
@@ -451,6 +463,12 @@ const translations: Record<Lang, Translation> = {
           description:
             "Una app móvil de vocabulario interactivo que usa IA para acompañarte en tu aprendizaje.",
         },
+        {
+          id: "tiip",
+          title: "TIIP",
+          description:
+            "Aplicación web de gestión de incidentes y seguimiento de datos con análisis por IA.",
+        },
       ],
     },
     experience: {
@@ -600,6 +618,12 @@ const translations: Record<Lang, Translation> = {
           title: "Lexia",
           description:
             "Un'app mobile di vocabolario interattivo che usa l'IA per guidarti nel tuo apprendimento.",
+        },
+        {
+          id: "tiip",
+          title: "TIIP",
+          description:
+            "Applicazione web per la gestione degli incidenti e il tracciamento dei dati con analisi tramite IA.",
         },
       ],
     },

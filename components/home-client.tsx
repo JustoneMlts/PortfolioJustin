@@ -55,6 +55,15 @@ const projectMeta: {
     icon: <span>💼</span>,
     category: "Mobile App",
   },
+  {
+    id: "tiip",
+    image: "/tiipCard.png",
+    technologies: ["React", "TypeScript", "NestJS", "PostgreSQL", "Docker"],
+    link: "https://tiip-justonemlts-projects.vercel.app/",
+    github: "#",
+    icon: <span>🛡️</span>,
+    category: "Web App",
+  },
 ]
 
 const skillsMeta = [
