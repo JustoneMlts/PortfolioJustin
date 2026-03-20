@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { ExternalLink, Github, ChevronLeft, ChevronRight } from "lucide-react"
 import { useLanguage } from "@/contexts/language-context"
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 
 interface Project {
   id: string
@@ -249,9 +250,20 @@ function ProjectCard({
             </Badge>
           ))}
           {project.technologies.length > 3 && (
-            <Badge variant="secondary" className="text-xs neon-badge">
-              +{project.technologies.length - 3}
-            </Badge>
+            <TooltipProvider delayDuration={100}>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Badge variant="secondary" className="text-xs neon-badge cursor-default">
+                    +{project.technologies.length - 3}
+                  </Badge>
+                </TooltipTrigger>
+                <TooltipContent className="flex flex-col gap-1">
+                  {project.technologies.slice(3).map((tech) => (
+                    <span key={tech}>{tech}</span>
+                  ))}
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
           )}
         </div>
 
