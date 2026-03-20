@@ -127,7 +127,7 @@ export default function Contact() {
                 </div>
                 <div>
                   <h4 className="font-medium">Email</h4>
-                  <p className="text-foreground/70">contact@justinmaltese.com</p>
+                  <p className="text-foreground/70">justin.maltese07@gmail.com</p>
                 </div>
               </div>
 
@@ -137,7 +137,7 @@ export default function Contact() {
                 </div>
                 <div>
                   <h4 className="font-medium">{t.contact.phone}</h4>
-                  <p className="text-foreground/70">+33 6 12 34 56 78</p>
+                  <p className="text-foreground/70">07 81 54 45 07</p>
                 </div>
               </div>
 
@@ -147,7 +147,7 @@ export default function Contact() {
                 </div>
                 <div>
                   <h4 className="font-medium">{t.contact.location}</h4>
-                  <p className="text-foreground/70">Paris, France</p>
+                  <p className="text-foreground/70">France</p>
                 </div>
               </div>
             </div>

@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
-import { ArrowDown, Github, Linkedin, Twitter, Code, Zap, Star, GraduationCap, X } from "lucide-react"
+import { ArrowDown, Github, Linkedin, Code, Zap, Star, GraduationCap, X } from "lucide-react"
 import { useState, useEffect } from "react"
 import { useLanguage } from "@/contexts/language-context"
 
@@ -110,16 +110,6 @@ export default function Hero() {
                 whileTap={{ scale: 0.9 }}
               >
                 <Linkedin size={20} />
-              </motion.a>
-              <motion.a
-                href="https://twitter.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="social-button text-foreground/70 hover:text-primary"
-                whileHover={{ scale: 1.1, rotate: 5 }}
-                whileTap={{ scale: 0.9 }}
-              >
-                <Twitter size={20} />
               </motion.a>
             </div>
           </motion.div>

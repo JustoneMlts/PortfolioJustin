@@ -141,6 +141,11 @@ const translations: Record<Lang, Translation> = {
           description: "Apprenez facilement l'italien avec une app interactive.",
         },
         {
+          id: "pfg",
+          title: "PFG",
+          description: "Application de gestion de factures et de suivi des paiements.",
+        },
+        {
           id: "Lexia",
           title: "Lexia",
           description:
@@ -284,6 +289,11 @@ const translations: Record<Lang, Translation> = {
           id: "italingo",
           title: "Italingo",
           description: "Learn Italian easily with an interactive app.",
+        },
+        {
+          id: "pfg",
+          title: "PFG",
+          description: "Invoice management and payment tracking application.",
         },
         {
           id: "Lexia",
@@ -431,6 +441,11 @@ const translations: Record<Lang, Translation> = {
           description: "Aprende italiano fácilmente con una app interactiva.",
         },
         {
+          id: "pfg",
+          title: "PFG",
+          description: "Aplicación de gestión de facturas y seguimiento de pagos.",
+        },
+        {
           id: "Lexia",
           title: "Lexia",
           description:
@@ -574,6 +589,11 @@ const translations: Record<Lang, Translation> = {
           id: "italingo",
           title: "Italingo",
           description: "Impara l'italiano facilmente con un'app interattiva.",
+        },
+        {
+          id: "pfg",
+          title: "PFG",
+          description: "Applicazione per la gestione delle fatture e il monitoraggio dei pagamenti.",
         },
         {
           id: "Lexia",

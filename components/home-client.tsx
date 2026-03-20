@@ -39,6 +39,15 @@ const projectMeta: {
     category: "Web App",
   },
   {
+    id: "pfg",
+    image: "/pfgCard.png",
+    technologies: ["C#", ".NET", "React", "MySQL"],
+    link: "#",
+    github: "#",
+    icon: <span>📄</span>,
+    category: "Web App",
+  },
+  {
     id: "Lexia",
     image: "/LexiaCard.png",
     technologies: ["React Native", "TypeScript", "Firebase", "Expo", "OpenAI API"],
