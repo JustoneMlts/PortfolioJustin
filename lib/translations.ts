@@ -67,8 +67,10 @@ export interface Translation {
     bubble: string
     greeting: string
     question: string
+    suggestions: string[]
     inputPlaceholder: string
     match: string
+    familyMatch: string
     noMatch: string
     viewProject: string
     askAgain: string
@@ -255,8 +257,19 @@ const translations: Record<Lang, Translation> = {
       bubble: "Vous cherchez un projet en particulier ?",
       greeting: "Bonjour ! 👋 Je suis l'assistant de Justin. Je suis là pour vous aider à trouver le projet qui vous intéresse le plus.",
       question: "Décrivez ce que vous cherchez : une techno, un domaine, un type d'app... (ex : mobile, C#, IA, gestion...)",
+      suggestions: [
+        "Montre-moi les projets React",
+        "Montre-moi les Web App",
+        "Quel projet utilise Node.js ?",
+        "Montre-moi les apps mobiles",
+        "Quel projet utilise C# ?",
+        "Montre-moi les projets TypeScript",
+        "Quel projet utilise l'IA ?",
+        "Montre-moi les sites web",
+      ],
       inputPlaceholder: "Écrivez votre réponse...",
       match: "Voici les projets qui pourraient vous intéresser :",
+      familyMatch: "Je travaille actuellement sur des projets {tech} ! En attendant, voici mes projets avec des technos similaires :",
       noMatch: "Je n'ai pas trouvé de projet correspondant, mais vous pouvez parcourir tous les projets ci-dessus !",
       viewProject: "Voir le projet",
       askAgain: "Autre chose ?",
@@ -423,8 +436,19 @@ const translations: Record<Lang, Translation> = {
       bubble: "Looking for a specific project?",
       greeting: "Hello! 👋 I'm Justin's assistant. I'm here to help you find the project that interests you the most.",
       question: "Describe what you're looking for: a technology, a domain, a type of app... (e.g. mobile, C#, AI, management...)",
+      suggestions: [
+        "Show me React projects",
+        "Show me Web Apps",
+        "Which project uses Node.js?",
+        "Show me mobile apps",
+        "Which project uses C#?",
+        "Show me TypeScript projects",
+        "Which project uses AI?",
+        "Show me websites",
+      ],
       inputPlaceholder: "Type your answer...",
       match: "Here are the projects that might interest you:",
+      familyMatch: "I'm currently working on {tech} projects! In the meantime, here are my projects with similar technologies:",
       noMatch: "I couldn't find a matching project, but feel free to browse all projects above!",
       viewProject: "View project",
       askAgain: "Something else?",
@@ -591,8 +615,19 @@ const translations: Record<Lang, Translation> = {
       bubble: "¿Buscas un proyecto en particular?",
       greeting: "¡Hola! 👋 Soy el asistente de Justin. Estoy aquí para ayudarte a encontrar el proyecto que más te interese.",
       question: "Describe lo que buscas: una tecnología, un dominio, un tipo de app... (ej: móvil, C#, IA, gestión...)",
+      suggestions: [
+        "Muéstrame proyectos React",
+        "Muéstrame las Web Apps",
+        "¿Qué proyecto usa Node.js?",
+        "Muéstrame apps móviles",
+        "¿Qué proyecto usa C#?",
+        "Muéstrame proyectos TypeScript",
+        "¿Qué proyecto usa IA?",
+        "Muéstrame sitios web",
+      ],
       inputPlaceholder: "Escribe tu respuesta...",
       match: "Aquí están los proyectos que podrían interesarte:",
+      familyMatch: "¡Actualmente estoy trabajando en proyectos {tech}! Mientras tanto, aquí están mis proyectos con tecnologías similares:",
       noMatch: "No encontré un proyecto correspondiente, ¡pero puedes explorar todos los proyectos arriba!",
       viewProject: "Ver proyecto",
       askAgain: "¿Algo más?",
@@ -759,8 +794,19 @@ const translations: Record<Lang, Translation> = {
       bubble: "Stai cercando un progetto in particolare?",
       greeting: "Ciao! 👋 Sono l'assistente di Justin. Sono qui per aiutarti a trovare il progetto che ti interessa di più.",
       question: "Descrivi cosa cerchi: una tecnologia, un dominio, un tipo di app... (es: mobile, C#, IA, gestione...)",
+      suggestions: [
+        "Mostrami i progetti React",
+        "Mostrami le Web App",
+        "Quale progetto usa Node.js?",
+        "Mostrami le app mobile",
+        "Quale progetto usa C#?",
+        "Mostrami i progetti TypeScript",
+        "Quale progetto usa l'IA?",
+        "Mostrami i siti web",
+      ],
       inputPlaceholder: "Scrivi la tua risposta...",
       match: "Ecco i progetti che potrebbero interessarti:",
+      familyMatch: "Sto attualmente lavorando su progetti {tech}! Nel frattempo, ecco i miei progetti con tecnologie simili:",
       noMatch: "Non ho trovato un progetto corrispondente, ma puoi sfogliare tutti i progetti sopra!",
       viewProject: "Vedi il progetto",
       askAgain: "Altro?",
