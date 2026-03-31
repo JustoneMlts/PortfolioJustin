@@ -5,7 +5,7 @@ import { useState, useEffect, useCallback, useRef } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { ExternalLink, Github, ChevronLeft, ChevronRight } from "lucide-react"
+import { ExternalLink, Github, ChevronLeft, ChevronRight, ChevronDown, ChevronUp } from "lucide-react"
 import { useLanguage } from "@/contexts/language-context"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 
@@ -26,6 +26,9 @@ interface ProjectsProps {
   projects?: Project[]
 }
 
+// Height of the content section used to pre-reserve space in desktop layout
+const CONTENT_HEIGHT = 240
+
 // 3 visible cards: side cards are SIDE_SCALE of center
 const GAP = 16
 const SIDE_SCALE = 0.88
@@ -35,6 +38,7 @@ export default function Projects({ projects = [] }: ProjectsProps) {
   const n = projects.length
   const wrapperRef = useRef<HTMLDivElement>(null)
   const [vpWidth, setVpWidth] = useState(0)
+  const [isMobile, setIsMobile] = useState(false)
   const [carousel, setCarousel] = useState({ index: n, instant: false })
   const [paused, setPaused] = useState(false)
 
@@ -43,7 +47,10 @@ export default function Projects({ projects = [] }: ProjectsProps) {
   useEffect(() => {
     const el = wrapperRef.current
     if (!el) return
-    const update = () => setVpWidth(el.clientWidth)
+    const update = () => {
+      setVpWidth(el.clientWidth)
+      setIsMobile(window.innerWidth < 640)
+    }
     update()
     const ro = new ResizeObserver(update)
     ro.observe(el)
@@ -73,19 +80,9 @@ export default function Projects({ projects = [] }: ProjectsProps) {
     return () => clearInterval(timer)
   }, [paused, next])
 
-  // All cards have same DOM width → 3 fit exactly in viewport
-  // Scale effect on center is purely visual (no layout impact)
-  const cardW = vpWidth > 0 ? (vpWidth - 2 * GAP) / 3 : 280
-
-  // Center card = carousel.index + 1 (card at index is the left one)
-  // Offset: slide so that card[index] starts at x=0
-  const offset = carousel.index * (cardW + GAP)
-
   const activeInMiddle = ((carousel.index % n) + n) % n
 
   const IMAGE_H = 192
-  const EXPANDED_H = IMAGE_H + CONTENT_HEIGHT
-  // Card moves UP by CONTENT_HEIGHT/2 on expand → need that much extra top space
   const TOP_PAD = Math.ceil(CONTENT_HEIGHT / 2) + 16
 
   const drawLine = {
@@ -97,13 +94,96 @@ export default function Projects({ projects = [] }: ProjectsProps) {
     },
   }
 
+  // ── MOBILE ─────────────────────────────────────────────────────────
+  if (isMobile) {
+    const cardW = vpWidth > 0 ? vpWidth - 32 : 300
+    const mobileOffset = carousel.index * (cardW + GAP)
+
+    return (
+      <section id="projects" className="py-20 relative overflow-visible">
+        <div className="container mx-auto px-4">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            variants={{ hidden: { opacity: 0 }, visible: { opacity: 1, transition: { staggerChildren: 0.2 } } }}
+            className="text-center mb-12"
+          >
+            <motion.h2
+              variants={{ hidden: { y: -50, opacity: 0, scale: 0.5 }, visible: { y: 0, opacity: 1, scale: 1, transition: { duration: 0.8, type: "spring" } } }}
+              className="text-3xl font-bold mb-4 neon-glow"
+            >
+              {t.projects.title}
+            </motion.h2>
+            <div className="flex justify-center">
+              <svg width="140" height="10" viewBox="0 0 140 10">
+                <motion.path d="M 0 5 Q 35 0 70 5 Q 105 10 140 5" stroke="rgb(139, 92, 246)" strokeWidth="2" fill="none" variants={drawLine} />
+                <motion.path d="M 20 5 Q 55 2 90 5 Q 125 8 120 5" stroke="rgb(34, 211, 238)" strokeWidth="1.5" fill="none" variants={{ ...drawLine, visible: { ...drawLine.visible, transition: { pathLength: { duration: 2, ease: "easeInOut", delay: 0.5 }, opacity: { duration: 0.3, delay: 0.5 } } } }} />
+              </svg>
+            </div>
+          </motion.div>
+
+          <div
+            className="relative"
+            onTouchStart={() => setPaused(true)}
+            onTouchEnd={() => setPaused(false)}
+          >
+            {/* Prev/Next arrows */}
+            <button onClick={prev} className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1 w-8 h-8 rounded-full border border-slate-700/50 bg-slate-900/90 flex items-center justify-center text-foreground/60 hover:text-primary z-20">
+              <ChevronLeft className="w-4 h-4" />
+            </button>
+            <button onClick={next} className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1 w-8 h-8 rounded-full border border-slate-700/50 bg-slate-900/90 flex items-center justify-center text-foreground/60 hover:text-primary z-20">
+              <ChevronRight className="w-4 h-4" />
+            </button>
+
+            {/* Viewport */}
+            <div ref={wrapperRef} style={{ overflow: "visible", marginLeft: 16, marginRight: 16 }}>
+              <motion.div
+                className="flex items-start"
+                style={{ gap: GAP }}
+                animate={{ x: -mobileOffset }}
+                transition={carousel.instant ? { duration: 0 } : { type: "tween", ease: "easeInOut", duration: 0.5 }}
+                onAnimationComplete={handleAnimationComplete}
+              >
+                {tripled.map((project, i) => (
+                  <div key={`${project.id}-${i}`} style={{ width: cardW, flexShrink: 0 }}>
+                    <ProjectCard
+                      project={project}
+                      viewLabel={t.projects.view}
+                      viewProjectLabel={t.projects.viewProject}
+                      codeLabel={t.projects.code}
+                      comingSoonLabel={t.projects.comingSoon}
+                      mobile
+                    />
+                  </div>
+                ))}
+              </motion.div>
+            </div>
+          </div>
+
+          {/* Dots */}
+          <div className="flex justify-center gap-2 mt-5">
+            {projects.map((_, i) => (
+              <button key={i} onClick={() => { const diff = i - activeInMiddle; setCarousel((s) => ({ index: s.index + diff, instant: false })) }}
+                className={`h-1.5 rounded-full transition-all duration-300 ${i === activeInMiddle ? "w-6 bg-primary" : "w-1.5 bg-slate-600"}`}
+              />
+            ))}
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  // ── DESKTOP ─────────────────────────────────────────────────────────
+  const cardW = vpWidth > 0 ? (vpWidth - 2 * GAP) / 3 : 280
+  const offset = carousel.index * (cardW + GAP)
+
   return (
     <section id="projects" className="py-20 relative overflow-visible">
       <div className="absolute top-10 right-10 w-20 h-20 border-2 border-cyan-400/30 rotate-45 pointer-events-none" />
       <div className="absolute bottom-20 left-10 w-16 h-16 border-2 border-violet-400/30 pointer-events-none" />
 
       <div className="container mx-auto px-4">
-        {/* Title */}
         <motion.div
           initial="hidden"
           whileInView="visible"
@@ -112,10 +192,7 @@ export default function Projects({ projects = [] }: ProjectsProps) {
           className="text-center mb-16"
         >
           <motion.h2
-            variants={{
-              hidden: { y: -50, opacity: 0, scale: 0.5 },
-              visible: { y: 0, opacity: 1, scale: 1, transition: { duration: 0.8, type: "spring" } },
-            }}
+            variants={{ hidden: { y: -50, opacity: 0, scale: 0.5 }, visible: { y: 0, opacity: 1, scale: 1, transition: { duration: 0.8, type: "spring" } } }}
             className="text-3xl font-bold mb-4 neon-glow"
           >
             {t.projects.title}
@@ -123,27 +200,18 @@ export default function Projects({ projects = [] }: ProjectsProps) {
           <div className="flex justify-center">
             <svg width="140" height="10" viewBox="0 0 140 10">
               <motion.path d="M 0 5 Q 35 0 70 5 Q 105 10 140 5" stroke="rgb(139, 92, 246)" strokeWidth="2" fill="none" variants={drawLine} />
-              <motion.path
-                d="M 20 5 Q 55 2 90 5 Q 125 8 120 5"
-                stroke="rgb(34, 211, 238)"
-                strokeWidth="1.5"
-                fill="none"
-                variants={{ ...drawLine, visible: { ...drawLine.visible, transition: { pathLength: { duration: 2, ease: "easeInOut", delay: 0.5 }, opacity: { duration: 0.3, delay: 0.5 } } } }}
-              />
+              <motion.path d="M 20 5 Q 55 2 90 5 Q 125 8 120 5" stroke="rgb(34, 211, 238)" strokeWidth="1.5" fill="none" variants={{ ...drawLine, visible: { ...drawLine.visible, transition: { pathLength: { duration: 2, ease: "easeInOut", delay: 0.5 }, opacity: { duration: 0.3, delay: 0.5 } } } }} />
             </svg>
           </div>
         </motion.div>
 
-        {/* Carousel wrapper — height accounts for upward expand + collapsed card */}
+        {/* Carousel wrapper */}
         <div
           className="relative max-w-5xl mx-auto"
-          style={{ height: TOP_PAD + IMAGE_H + CONTENT_HEIGHT + 24 }}
+          style={{ height: TOP_PAD + IMAGE_H + Math.ceil(CONTENT_HEIGHT / 2) + 24 }}
           onMouseEnter={() => setPaused(true)}
           onMouseLeave={() => setPaused(false)}
-          onTouchStart={() => setPaused(true)}
-          onTouchEnd={() => setPaused(false)}
         >
-          {/* Prev arrow — centered on the image zone */}
           <button
             onClick={prev}
             style={{ top: TOP_PAD + IMAGE_H / 2, transform: "translateY(-50%)" }}
@@ -151,8 +219,6 @@ export default function Projects({ projects = [] }: ProjectsProps) {
           >
             <ChevronLeft className="w-5 h-5" />
           </button>
-
-          {/* Next arrow */}
           <button
             onClick={next}
             style={{ top: TOP_PAD + IMAGE_H / 2, transform: "translateY(-50%)" }}
@@ -161,7 +227,6 @@ export default function Projects({ projects = [] }: ProjectsProps) {
             <ChevronRight className="w-5 h-5" />
           </button>
 
-          {/* Viewport: fully visible — side cards fade via opacity */}
           <div
             ref={wrapperRef}
             className="absolute"
@@ -199,18 +264,12 @@ export default function Projects({ projects = [] }: ProjectsProps) {
           </div>
         </div>
 
-        {/* Dot indicators */}
         <div className="flex justify-center gap-2 mt-4">
           {projects.map((_, i) => (
             <button
               key={i}
-              onClick={() => {
-                const diff = i - activeInMiddle
-                setCarousel((s) => ({ index: s.index + diff, instant: false }))
-              }}
-              className={`h-1.5 rounded-full transition-all duration-300 ${
-                i === activeInMiddle ? "w-6 bg-primary" : "w-1.5 bg-slate-600 hover:bg-slate-400"
-              }`}
+              onClick={() => { const diff = i - activeInMiddle; setCarousel((s) => ({ index: s.index + diff, instant: false })) }}
+              className={`h-1.5 rounded-full transition-all duration-300 ${i === activeInMiddle ? "w-6 bg-primary" : "w-1.5 bg-slate-600 hover:bg-slate-400"}`}
             />
           ))}
         </div>
@@ -219,29 +278,31 @@ export default function Projects({ projects = [] }: ProjectsProps) {
   )
 }
 
-// Height of the content section (title + desc + badges + buttons + padding)
-const CONTENT_HEIGHT = 240
-
 function ProjectCard({
   project,
   viewLabel,
   viewProjectLabel,
   codeLabel,
   comingSoonLabel,
+  mobile = false,
 }: {
   project: Project
   viewLabel: string
   viewProjectLabel: string
   codeLabel: string
   comingSoonLabel: string
+  mobile?: boolean
 }) {
+  const [expanded, setExpanded] = useState(false)
   const [hovered, setHovered] = useState(false)
+
+  const isOpen = mobile ? expanded : hovered
 
   return (
     <motion.div
-      onHoverStart={() => setHovered(true)}
-      onHoverEnd={() => setHovered(false)}
-      animate={{ y: hovered ? -(CONTENT_HEIGHT / 2) : 0 }}
+      onHoverStart={() => !mobile && setHovered(true)}
+      onHoverEnd={() => !mobile && setHovered(false)}
+      animate={{ y: !mobile && isOpen ? -(CONTENT_HEIGHT / 2) : 0 }}
       transition={{ duration: 0.25, ease: [0.25, 0.46, 0.45, 0.94] }}
       className="w-full bg-slate-900/80 border border-slate-700/50 rounded-xl overflow-hidden hover:border-primary/50 hover:shadow-lg hover:shadow-primary/20 transition-colors duration-300"
     >
@@ -250,18 +311,27 @@ function ProjectCard({
         <img
           src={project.image || "/placeholder.svg"}
           alt={project.title}
-          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-          style={{ transform: hovered ? "scale(1.05)" : "scale(1)", transition: "transform 0.5s" }}
+          className="w-full h-full object-cover"
+          style={{ transform: isOpen ? "scale(1.05)" : "scale(1)", transition: "transform 0.5s" }}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 to-transparent pointer-events-none" />
         <span className="absolute top-3 right-3 text-xs font-mono bg-slate-900/80 border border-slate-600/50 text-foreground/70 px-2 py-0.5 rounded-full backdrop-blur-sm">
           {project.category}
         </span>
+        {/* Mobile expand button */}
+        {mobile && (
+          <button
+            onClick={() => setExpanded((e) => !e)}
+            className="absolute bottom-3 right-3 w-8 h-8 rounded-full bg-slate-900/80 border border-slate-600/50 flex items-center justify-center text-foreground/70 hover:text-primary transition-colors backdrop-blur-sm"
+          >
+            {expanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+          </button>
+        )}
       </div>
 
-      {/* Content — slides in from below */}
+      {/* Content */}
       <AnimatePresence initial={false}>
-        {hovered && (
+        {isOpen && (
           <motion.div
             key="content"
             initial={{ height: 0, opacity: 0, overflow: "hidden" }}
