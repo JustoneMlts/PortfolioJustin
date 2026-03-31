@@ -23,7 +23,7 @@ const projectMeta: {
   {
     id: "geneailogy",
     image: "/GeneCard.png",
-    technologies: ["Next.js", "Framer Motion", "GSAP", "Sanity CMS"],
+    technologies: ["Next.js", "React", "Node.js"],
     link: "https://geneailogy.vercel.app",
     github: "https://github.com/JustoneMlts/geneailogy",
     icon: <span>💬</span>,
@@ -74,6 +74,7 @@ const skillsMeta = [
       { name: "React" },
       { name: "TypeScript" },
       { name: "Next.js" },
+      { name: "Angular" },
       { name: "CSS/SCSS" },
       { name: "Tailwind CSS" },
     ],
@@ -82,6 +83,9 @@ const skillsMeta = [
     skills: [
       { name: "Node.js" },
       { name: "Express" },
+      { name: "C#" },
+      { name: "Java" },
+      { name: "Python" },
       { name: "MongoDB" },
       { name: "PostgreSQL" },
       { name: "GraphQL" },
