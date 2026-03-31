@@ -26,7 +26,7 @@ const projectMeta: {
   {
     id: "geneailogy",
     image: "/GeneCard.png",
-    technologies: ["Next.js", "React", "Node.js"],
+    technologies: ["Next.js", "React.js", "Node.js", "TypeScript"],
     link: "https://geneailogy.vercel.app",
     github: "https://github.com/JustoneMlts/geneailogy",
     icon: <span>💬</span>,
@@ -44,7 +44,7 @@ const projectMeta: {
   {
     id: "pfg",
     image: "/pfgCard.png",
-    technologies: ["C#", ".NET", "React", "MySQL"],
+    technologies: ["C#", ".NET", "React.js", "MySQL"],
     link: "https://pfg-liard.vercel.app/",
     github: "#",
     icon: <span>📄</span>,
@@ -63,7 +63,7 @@ const projectMeta: {
   {
     id: "tiip",
     image: "/tiipCard.png",
-    technologies: ["React", "TypeScript", "NestJS", "PostgreSQL", "Docker"],
+    technologies: ["React.js", "TypeScript", "NestJS", "PostgreSQL", "Docker"],
     link: "https://tiip-justonemlts-projects.vercel.app/",
     github: "#",
     icon: <span>🛡️</span>,

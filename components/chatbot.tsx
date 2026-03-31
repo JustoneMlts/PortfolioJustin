@@ -51,7 +51,7 @@ const TECH_FAMILIES: { input: string[]; related: string[]; label: string }[] = [
 
 // Extra keyword aliases → normalized tokens (language-agnostic)
 const KEYWORD_ALIASES: { tokens: string[]; keywords: string[] }[] = [
-  { tokens: ["mobile", "app"], keywords: ["mobile", "app", "application", "ios", "android"] },
+  { tokens: ["mobile"], keywords: ["mobile", "ios", "android"] },
   { tokens: ["ia", "ai"], keywords: ["ia", "ai", "intelligence artificielle", "artificial intelligence", "inteligencia artificial", "intelligenza artificiale", "gpt", "openai"] },
   { tokens: ["web", "website"], keywords: ["web", "website", "site"] },
   { tokens: ["gestion", "management"], keywords: ["gestion", "management", "gestión", "gestione", "comptabilité", "accounting"] },
@@ -367,7 +367,7 @@ export default function Chatbot({ projects, startPulse = false }: ChatbotProps) 
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
             transition={{ duration: 0.2 }}
             className="fixed bottom-24 right-6 z-50 w-[min(360px,calc(100vw-24px))] bg-slate-900 border border-slate-700/60 rounded-2xl shadow-2xl shadow-black/50 flex flex-col overflow-hidden"
-            style={{ maxHeight: "min(480px, calc(100vh - 120px))" }}
+            style={{ height: "min(520px, calc(100vh - 120px))" }}
           >
             {/* Header */}
             <div className="flex items-center gap-3 px-4 py-3 border-b border-slate-700/60 bg-slate-800/80">
@@ -397,7 +397,7 @@ export default function Chatbot({ projects, startPulse = false }: ChatbotProps) 
             </div>
 
             {/* Messages */}
-            <div className="flex-1 overflow-y-auto p-4 space-y-3 text-sm">
+            <div className="flex-1 min-h-0 overflow-y-auto p-4 space-y-3 text-sm">
               {messages.map((msg, i) => (
                 <div key={i} className={`flex ${msg.from === "user" ? "justify-end" : "justify-start"}`}>
                   {msg.from === "bot" && (
@@ -455,7 +455,7 @@ export default function Chatbot({ projects, startPulse = false }: ChatbotProps) 
             </div>
 
             {/* Scrolling suggestions */}
-            <div className="border-t border-slate-700/60 bg-slate-800/40 overflow-hidden">
+            <div className="flex-shrink-0 border-t border-slate-700/60 bg-slate-800/40 overflow-hidden">
               <style>{`
                 @keyframes suggestions-scroll {
                   0% { transform: translateX(0); }
@@ -507,7 +507,7 @@ export default function Chatbot({ projects, startPulse = false }: ChatbotProps) 
             {/* Input */}
             <form
               onSubmit={(e) => { e.preventDefault(); handleSend() }}
-              className="flex items-center gap-2 p-3 bg-slate-800/60"
+              className="flex-shrink-0 flex items-center gap-2 p-3 bg-slate-800/60"
             >
               <input
                 value={input}
