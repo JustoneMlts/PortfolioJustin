@@ -10,6 +10,7 @@ import Contact from "@/components/contact"
 import Footer from "@/components/footer"
 import Header from "@/components/header"
 import Chatbot from "@/components/chatbot"
+import WelcomeModal from "@/components/welcome-modal"
 
 const projectMeta: {
   id: string
@@ -140,6 +141,7 @@ export default function HomeClient() {
 
       <Footer />
       <Chatbot projects={projects} />
+      <WelcomeModal />
     </div>
   )
 }

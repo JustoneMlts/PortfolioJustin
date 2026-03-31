@@ -95,6 +95,14 @@ export interface Translation {
     role: string
     rights: string
   }
+  welcome: {
+    greeting: string
+    name: string
+    role: string
+    body: string
+    chatbotHint: string
+    cta: string
+  }
 }
 
 const translations: Record<Lang, Translation> = {
@@ -275,6 +283,14 @@ const translations: Record<Lang, Translation> = {
       askAgain: "Autre chose ?",
       close: "Fermer",
     },
+    welcome: {
+      greeting: "Salut !",
+      name: "Je suis Justin Maltese",
+      role: "Développeur Full Stack",
+      body: "Bienvenue sur mon portfolio ! Tu y trouveras tous mes projets personnels ainsi que mon parcours professionnel.",
+      chatbotHint: "💬 N'hésite pas à utiliser mon chatbot pour t'aider à trouver les projets qui t'intéresseront.",
+      cta: "C'est compris !",
+    },
   },
 
   en: {
@@ -453,6 +469,14 @@ const translations: Record<Lang, Translation> = {
       viewProject: "View project",
       askAgain: "Something else?",
       close: "Close",
+    },
+    welcome: {
+      greeting: "Hey!",
+      name: "I'm Justin Maltese",
+      role: "Full Stack Developer",
+      body: "Welcome to my portfolio! Here you'll find all my personal projects as well as my professional background.",
+      chatbotHint: "💬 Feel free to use my chatbot to help you find the projects that will interest you.",
+      cta: "Got it!",
     },
   },
 
@@ -633,6 +657,14 @@ const translations: Record<Lang, Translation> = {
       askAgain: "¿Algo más?",
       close: "Cerrar",
     },
+    welcome: {
+      greeting: "¡Hola!",
+      name: "Soy Justin Maltese",
+      role: "Desarrollador Full Stack",
+      body: "¡Bienvenido a mi portfolio! Aquí encontrarás todos mis proyectos personales así como mi trayectoria profesional.",
+      chatbotHint: "💬 No dudes en usar mi chatbot para encontrar los proyectos que te interesarán.",
+      cta: "¡Entendido!",
+    },
   },
 
   it: {
@@ -811,6 +843,14 @@ const translations: Record<Lang, Translation> = {
       viewProject: "Vedi il progetto",
       askAgain: "Altro?",
       close: "Chiudi",
+    },
+    welcome: {
+      greeting: "Ciao!",
+      name: "Sono Justin Maltese",
+      role: "Sviluppatore Full Stack",
+      body: "Benvenuto nel mio portfolio! Qui troverai tutti i miei progetti personali e il mio percorso professionale.",
+      chatbotHint: "💬 Non esitare a usare il mio chatbot per trovare i progetti che ti interesseranno.",
+      cta: "Ho capito!",
     },
   },
 }
