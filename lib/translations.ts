@@ -63,6 +63,17 @@ export interface Translation {
     initialMessage: string
     responses: string[]
   }
+  chatbot: {
+    bubble: string
+    greeting: string
+    question: string
+    inputPlaceholder: string
+    match: string
+    noMatch: string
+    viewProject: string
+    askAgain: string
+    close: string
+  }
   contact: {
     title: string
     subtitle: string
@@ -240,6 +251,17 @@ const translations: Record<Lang, Translation> = {
       role: "Développeur Full Stack",
       rights: "Tous droits réservés.",
     },
+    chatbot: {
+      bubble: "Vous cherchez un projet en particulier ?",
+      greeting: "Bonjour ! 👋 Je suis l'assistant de Justin. Je suis là pour vous aider à trouver le projet qui vous intéresse le plus.",
+      question: "Décrivez ce que vous cherchez : une techno, un domaine, un type d'app... (ex : mobile, C#, IA, gestion...)",
+      inputPlaceholder: "Écrivez votre réponse...",
+      match: "Voici les projets qui pourraient vous intéresser :",
+      noMatch: "Je n'ai pas trouvé de projet correspondant, mais vous pouvez parcourir tous les projets ci-dessus !",
+      viewProject: "Voir le projet",
+      askAgain: "Autre chose ?",
+      close: "Fermer",
+    },
   },
 
   en: {
@@ -396,6 +418,17 @@ const translations: Record<Lang, Translation> = {
     footer: {
       role: "Full Stack Developer",
       rights: "All rights reserved.",
+    },
+    chatbot: {
+      bubble: "Looking for a specific project?",
+      greeting: "Hello! 👋 I'm Justin's assistant. I'm here to help you find the project that interests you the most.",
+      question: "Describe what you're looking for: a technology, a domain, a type of app... (e.g. mobile, C#, AI, management...)",
+      inputPlaceholder: "Type your answer...",
+      match: "Here are the projects that might interest you:",
+      noMatch: "I couldn't find a matching project, but feel free to browse all projects above!",
+      viewProject: "View project",
+      askAgain: "Something else?",
+      close: "Close",
     },
   },
 
@@ -554,6 +587,17 @@ const translations: Record<Lang, Translation> = {
       role: "Desarrollador Full Stack",
       rights: "Todos los derechos reservados.",
     },
+    chatbot: {
+      bubble: "¿Buscas un proyecto en particular?",
+      greeting: "¡Hola! 👋 Soy el asistente de Justin. Estoy aquí para ayudarte a encontrar el proyecto que más te interese.",
+      question: "Describe lo que buscas: una tecnología, un dominio, un tipo de app... (ej: móvil, C#, IA, gestión...)",
+      inputPlaceholder: "Escribe tu respuesta...",
+      match: "Aquí están los proyectos que podrían interesarte:",
+      noMatch: "No encontré un proyecto correspondiente, ¡pero puedes explorar todos los proyectos arriba!",
+      viewProject: "Ver proyecto",
+      askAgain: "¿Algo más?",
+      close: "Cerrar",
+    },
   },
 
   it: {
@@ -710,6 +754,17 @@ const translations: Record<Lang, Translation> = {
     footer: {
       role: "Sviluppatore Full Stack",
       rights: "Tutti i diritti riservati.",
+    },
+    chatbot: {
+      bubble: "Stai cercando un progetto in particolare?",
+      greeting: "Ciao! 👋 Sono l'assistente di Justin. Sono qui per aiutarti a trovare il progetto che ti interessa di più.",
+      question: "Descrivi cosa cerchi: una tecnologia, un dominio, un tipo di app... (es: mobile, C#, IA, gestione...)",
+      inputPlaceholder: "Scrivi la tua risposta...",
+      match: "Ecco i progetti che potrebbero interessarti:",
+      noMatch: "Non ho trovato un progetto corrispondente, ma puoi sfogliare tutti i progetti sopra!",
+      viewProject: "Vedi il progetto",
+      askAgain: "Altro?",
+      close: "Chiudi",
     },
   },
 }

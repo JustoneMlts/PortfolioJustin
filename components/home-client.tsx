@@ -9,6 +9,7 @@ import Skills from "@/components/skills"
 import Contact from "@/components/contact"
 import Footer from "@/components/footer"
 import Header from "@/components/header"
+import Chatbot from "@/components/chatbot"
 
 const projectMeta: {
   id: string
@@ -138,6 +139,7 @@ export default function HomeClient() {
       </main>
 
       <Footer />
+      <Chatbot projects={projects} />
     </div>
   )
 }
