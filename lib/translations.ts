@@ -37,6 +37,7 @@ export interface Translation {
     view: string
     viewProject: string
     code: string
+    comingSoon: string
     items: { id: string; title: string; description: string }[]
   }
   experience: {
@@ -129,6 +130,7 @@ const translations: Record<Lang, Translation> = {
       view: "Voir",
       viewProject: "Voir le projet",
       code: "Code",
+      comingSoon: "Mise en production...",
       items: [
         {
           id: "geneailogy",
@@ -285,6 +287,7 @@ const translations: Record<Lang, Translation> = {
       view: "View",
       viewProject: "View project",
       code: "Code",
+      comingSoon: "Coming soon...",
       items: [
         {
           id: "geneailogy",
@@ -441,6 +444,7 @@ const translations: Record<Lang, Translation> = {
       view: "Ver",
       viewProject: "Ver el proyecto",
       code: "Código",
+      comingSoon: "En producción...",
       items: [
         {
           id: "geneailogy",
@@ -597,6 +601,7 @@ const translations: Record<Lang, Translation> = {
       view: "Vedi",
       viewProject: "Vedi il progetto",
       code: "Codice",
+      comingSoon: "In produzione...",
       items: [
         {
           id: "geneailogy",

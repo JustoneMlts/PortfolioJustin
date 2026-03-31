@@ -18,6 +18,7 @@ const projectMeta: {
   github: string
   icon: React.ReactNode
   category: string
+  comingSoon?: boolean
 }[] = [
   {
     id: "geneailogy",
@@ -54,6 +55,7 @@ const projectMeta: {
     github: "https://github.com/JustoneMlts/Lexia",
     icon: <span>💼</span>,
     category: "Mobile App",
+    comingSoon: true,
   },
   {
     id: "tiip",

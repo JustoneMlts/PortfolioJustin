@@ -1,7 +1,7 @@
 "use client"
 
 import type React from "react"
-import { useState, useEffect, useCallback } from "react"
+import { useState, useEffect, useCallback, useRef } from "react"
 import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -19,35 +19,49 @@ interface Project {
   github: string
   icon: React.ReactNode
   category: string
+  comingSoon?: boolean
 }
 
 interface ProjectsProps {
   projects?: Project[]
 }
 
-const CARD_WIDTH = 380
 const GAP = 24
 
 export default function Projects({ projects = [] }: ProjectsProps) {
   const { t } = useLanguage()
-  // Triple the array: [copy1, copy2, copy3] — start in the middle copy
   const n = projects.length
+  const viewportRef = useRef<HTMLDivElement>(null)
+  const [cardWidth, setCardWidth] = useState(380)
   const [carousel, setCarousel] = useState({ index: n, instant: false })
   const [paused, setPaused] = useState(false)
 
   if (n === 0) return null
 
+  // Compute card width based on container size
+  useEffect(() => {
+    const el = viewportRef.current
+    if (!el) return
+    const update = () => {
+      const w = el.clientWidth
+      setCardWidth(Math.min(380, w - 0)) // full width on small screens
+    }
+    update()
+    const ro = new ResizeObserver(update)
+    ro.observe(el)
+    return () => ro.disconnect()
+  }, [])
+
+  // Reset to middle copy when projects list changes (language switch)
+  useEffect(() => {
+    setCarousel({ index: n, instant: true })
+  }, [n])
+
   const tripled = [...projects, ...projects, ...projects]
 
-  const next = useCallback(() => {
-    setCarousel((s) => ({ index: s.index + 1, instant: false }))
-  }, [])
+  const next = useCallback(() => setCarousel((s) => ({ index: s.index + 1, instant: false })), [])
+  const prev = useCallback(() => setCarousel((s) => ({ index: s.index - 1, instant: false })), [])
 
-  const prev = useCallback(() => {
-    setCarousel((s) => ({ index: s.index - 1, instant: false }))
-  }, [])
-
-  // After each animated transition, silently reset to the middle copy if needed
   const handleAnimationComplete = useCallback(() => {
     setCarousel((s) => {
       if (s.index >= n * 2) return { index: s.index - n, instant: true }
@@ -56,17 +70,14 @@ export default function Projects({ projects = [] }: ProjectsProps) {
     })
   }, [n])
 
-  // Auto-advance
   useEffect(() => {
     if (paused) return
     const timer = setInterval(next, 4000)
     return () => clearInterval(timer)
   }, [paused, next])
 
-  // Reset to middle when project list changes (language switch)
-  useEffect(() => {
-    setCarousel({ index: n, instant: true })
-  }, [n])
+  const offset = carousel.index * (cardWidth + GAP)
+  const activeInMiddle = ((carousel.index % n) + n) % n
 
   const drawLine = {
     hidden: { pathLength: 0, opacity: 0 },
@@ -77,12 +88,8 @@ export default function Projects({ projects = [] }: ProjectsProps) {
     },
   }
 
-  const offset = carousel.index * (CARD_WIDTH + GAP)
-  const activeInMiddle = ((carousel.index % n) + n) % n
-
   return (
     <section id="projects" className="py-20 relative overflow-hidden">
-      {/* Decorative elements */}
       <div className="absolute top-10 right-10 w-20 h-20 border-2 border-cyan-400/30 rotate-45 pointer-events-none" />
       <div className="absolute bottom-20 left-10 w-16 h-16 border-2 border-violet-400/30 pointer-events-none" />
 
@@ -104,7 +111,6 @@ export default function Projects({ projects = [] }: ProjectsProps) {
           >
             {t.projects.title}
           </motion.h2>
-
           <div className="flex justify-center">
             <svg width="140" height="10" viewBox="0 0 140 10">
               <motion.path
@@ -134,22 +140,24 @@ export default function Projects({ projects = [] }: ProjectsProps) {
           </div>
         </motion.div>
 
-        {/* Carousel wrapper */}
+        {/* Carousel */}
         <div
-          className="flex items-center gap-4"
+          className="flex items-center gap-2 sm:gap-4"
           onMouseEnter={() => setPaused(true)}
           onMouseLeave={() => setPaused(false)}
+          onTouchStart={() => setPaused(true)}
+          onTouchEnd={() => setPaused(false)}
         >
           {/* Prev arrow */}
           <button
             onClick={prev}
-            className="flex-shrink-0 w-10 h-10 rounded-full border border-slate-700/50 bg-slate-900/80 flex items-center justify-center text-foreground/60 hover:text-primary hover:border-primary/50 transition-colors z-10"
+            className="flex-shrink-0 w-8 h-8 sm:w-10 sm:h-10 rounded-full border border-slate-700/50 bg-slate-900/80 flex items-center justify-center text-foreground/60 hover:text-primary hover:border-primary/50 transition-colors z-10"
           >
-            <ChevronLeft className="w-5 h-5" />
+            <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5" />
           </button>
 
           {/* Viewport */}
-          <div className="flex-1 overflow-hidden rounded-xl py-6">
+          <div ref={viewportRef} className="flex-1 overflow-hidden rounded-xl py-6">
             <motion.div
               className="flex"
               style={{ gap: GAP }}
@@ -162,12 +170,13 @@ export default function Projects({ projects = [] }: ProjectsProps) {
               onAnimationComplete={handleAnimationComplete}
             >
               {tripled.map((project, i) => (
-                <div key={`${project.id}-${i}`} style={{ width: CARD_WIDTH, flexShrink: 0 }}>
+                <div key={`${project.id}-${i}`} style={{ width: cardWidth, flexShrink: 0 }}>
                   <ProjectCard
                     project={project}
                     viewLabel={t.projects.view}
                     viewProjectLabel={t.projects.viewProject}
                     codeLabel={t.projects.code}
+                    comingSoonLabel={t.projects.comingSoon}
                   />
                 </div>
               ))}
@@ -177,9 +186,9 @@ export default function Projects({ projects = [] }: ProjectsProps) {
           {/* Next arrow */}
           <button
             onClick={next}
-            className="flex-shrink-0 w-10 h-10 rounded-full border border-slate-700/50 bg-slate-900/80 flex items-center justify-center text-foreground/60 hover:text-primary hover:border-primary/50 transition-colors z-10"
+            className="flex-shrink-0 w-8 h-8 sm:w-10 sm:h-10 rounded-full border border-slate-700/50 bg-slate-900/80 flex items-center justify-center text-foreground/60 hover:text-primary hover:border-primary/50 transition-colors z-10"
           >
-            <ChevronRight className="w-5 h-5" />
+            <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5" />
           </button>
         </div>
 
@@ -208,11 +217,13 @@ function ProjectCard({
   viewLabel,
   viewProjectLabel,
   codeLabel,
+  comingSoonLabel,
 }: {
   project: Project
   viewLabel: string
   viewProjectLabel: string
   codeLabel: string
+  comingSoonLabel: string
 }) {
   return (
     <motion.div
@@ -220,7 +231,7 @@ function ProjectCard({
       className="w-full bg-slate-900/80 border border-slate-700/50 rounded-xl overflow-hidden hover:border-primary/50 hover:shadow-lg hover:shadow-primary/20 transition-colors duration-300"
     >
       {/* Image */}
-      <div className="relative h-48 overflow-hidden bg-slate-800">
+      <div className="relative h-40 sm:h-48 overflow-hidden bg-slate-800">
         <img
           src={project.image || "/placeholder.svg"}
           alt={project.title}
@@ -233,7 +244,7 @@ function ProjectCard({
       </div>
 
       {/* Content */}
-      <div className="p-5 flex flex-col gap-3">
+      <div className="p-4 sm:p-5 flex flex-col gap-3">
         <div className="flex items-center gap-3">
           <div className="w-9 h-9 rounded-lg bg-primary/20 flex items-center justify-center text-primary flex-shrink-0">
             {project.icon}
@@ -268,12 +279,19 @@ function ProjectCard({
         </div>
 
         <div className="flex gap-2 mt-1">
-          <Button size="sm" variant="outline" asChild className="flex-1 neon-button-outline text-xs">
-            <a href={project.link} target="_blank" rel="noopener noreferrer">
+          {project.comingSoon ? (
+            <Button size="sm" variant="outline" disabled className="flex-1 text-xs opacity-50 cursor-not-allowed">
               <ExternalLink className="mr-1 h-3 w-3" />
-              {viewLabel}
-            </a>
-          </Button>
+              {comingSoonLabel}
+            </Button>
+          ) : (
+            <Button size="sm" variant="outline" asChild className="flex-1 neon-button-outline text-xs">
+              <a href={project.link} target="_blank" rel="noopener noreferrer">
+                <ExternalLink className="mr-1 h-3 w-3" />
+                {viewLabel}
+              </a>
+            </Button>
+          )}
           <Button size="sm" variant="outline" asChild className="neon-button-outline">
             <a href={project.github} target="_blank" rel="noopener noreferrer">
               <Github className="h-3 w-3" />
