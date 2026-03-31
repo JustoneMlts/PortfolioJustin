@@ -147,6 +147,7 @@ interface Message {
 
 interface ChatbotProps {
   projects: Project[]
+  startPulse?: boolean
 }
 
 // Animated typing indicator
@@ -172,12 +173,12 @@ function TypingIndicator() {
   )
 }
 
-export default function Chatbot({ projects }: ChatbotProps) {
+export default function Chatbot({ projects, startPulse = false }: ChatbotProps) {
   const { t } = useLanguage()
   const [open, setOpen] = useState(false)
   const [messages, setMessages] = useState<Message[]>([])
   const [input, setInput] = useState("")
-  const [pulse, setPulse] = useState(true)
+  const [pulse, setPulse] = useState(false)
   const [bubbleDismissed, setBubbleDismissed] = useState(false)
   const [isTyping, setIsTyping] = useState(false)
   const [isBotBusy, setIsBotBusy] = useState(false)
@@ -249,9 +250,11 @@ export default function Chatbot({ projects }: ChatbotProps) {
   }, [messages, isTyping])
 
   useEffect(() => {
+    if (!startPulse) return
+    setPulse(true)
     const timer = setTimeout(() => setPulse(false), 6000)
     return () => clearTimeout(timer)
-  }, [])
+  }, [startPulse])
 
   useEffect(() => () => clearTimeouts(), [])
 

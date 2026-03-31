@@ -5,9 +5,18 @@ import { motion, AnimatePresence } from "framer-motion"
 import { X } from "lucide-react"
 import { useLanguage } from "@/contexts/language-context"
 
-export default function WelcomeModal() {
+interface WelcomeModalProps {
+  onClose?: () => void
+}
+
+export default function WelcomeModal({ onClose }: WelcomeModalProps) {
   const { t } = useLanguage()
   const [open, setOpen] = useState(false)
+
+  const close = () => {
+    setOpen(false)
+    onClose?.()
+  }
   const modalRef = useRef<HTMLDivElement>(null)
 
   // Open after a short delay on mount
@@ -21,7 +30,7 @@ export default function WelcomeModal() {
     if (!open) return
     const handleClick = (e: MouseEvent) => {
       if (modalRef.current && !modalRef.current.contains(e.target as Node)) {
-        setOpen(false)
+        close()
       }
     }
     document.addEventListener("mousedown", handleClick)
@@ -30,7 +39,7 @@ export default function WelcomeModal() {
 
   // Close on Escape
   useEffect(() => {
-    const handleKey = (e: KeyboardEvent) => { if (e.key === "Escape") setOpen(false) }
+    const handleKey = (e: KeyboardEvent) => { if (e.key === "Escape") close() }
     document.addEventListener("keydown", handleKey)
     return () => document.removeEventListener("keydown", handleKey)
   }, [])
@@ -55,7 +64,7 @@ export default function WelcomeModal() {
           >
             {/* Close button */}
             <button
-              onClick={() => setOpen(false)}
+              onClick={() => close()}
               className="absolute top-4 right-4 w-7 h-7 rounded-lg flex items-center justify-center text-foreground/40 hover:text-foreground hover:bg-slate-700/50 transition-colors"
             >
               <X className="w-4 h-4" />
@@ -93,7 +102,7 @@ export default function WelcomeModal() {
             <motion.button
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.97 }}
-              onClick={() => setOpen(false)}
+              onClick={() => close()}
               className="w-full bg-primary hover:bg-primary/90 text-white font-semibold py-2.5 rounded-xl transition-colors shadow-lg shadow-primary/20"
             >
               {t.welcome.cta}

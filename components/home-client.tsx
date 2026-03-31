@@ -1,5 +1,6 @@
 "use client"
 
+import { useState } from "react"
 import { useLanguage } from "@/contexts/language-context"
 import Hero from "@/components/hero"
 import Projects from "@/components/projects"
@@ -106,6 +107,7 @@ const skillsMeta = [
 
 export default function HomeClient() {
   const { t } = useLanguage()
+  const [chatbotPulse, setChatbotPulse] = useState(false)
 
   const projects = t.projects.items.map((item, i) => ({
     ...projectMeta[i],
@@ -140,8 +142,8 @@ export default function HomeClient() {
       </main>
 
       <Footer />
-      <Chatbot projects={projects} />
-      <WelcomeModal />
+      <Chatbot projects={projects} startPulse={chatbotPulse} />
+      <WelcomeModal onClose={() => setChatbotPulse(true)} />
     </div>
   )
 }
