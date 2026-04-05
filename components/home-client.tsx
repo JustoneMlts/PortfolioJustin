@@ -64,7 +64,7 @@ const projectMeta: {
     id: "tiip",
     image: "/tiipCard.png",
     technologies: ["React.js", "TypeScript", "NestJS", "PostgreSQL", "Docker"],
-    link: "https://tiip-justonemlts-projects.vercel.app/",
+    link: "https://tiip-ten.vercel.app/login",
     github: "#",
     icon: <span>🛡️</span>,
     category: "Web App",
